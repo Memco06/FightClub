@@ -1,2 +1,2 @@
 # FightClub
-A multiplayer augmented reality game for feasibility
+A multiplayer augmented reality game for feasibility!
