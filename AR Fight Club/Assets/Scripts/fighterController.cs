@@ -6,10 +6,12 @@ public class fighterController : MonoBehaviour
 {
 
     public Transform enemyTarget;
-    Animator anim;
+    static  Animator anim;
     public static bool mvBack = false;
     public static bool mvFWD = false;
     public static fighterController instance;
+    public static bool isAttacking = false;
+    private Vector3 direction;
 
     private void Awake()
     {
@@ -28,27 +30,65 @@ public class fighterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (mvBack == true)
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("fight_idle"))
         {
-            anim.SetTrigger("wkBACK");
-            anim.ResetTrigger("idle");
-        }
-        else
-        {
-            anim.SetTrigger("idle");
-            anim.ResetTrigger("wkBACK");
+            direction = enemyTarget.position - this.transform.position;
+            direction.y = 0;
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), 0.3f);
         }
 
-        if (mvFWD == true)
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("fight_idle"))
         {
-            anim.SetTrigger("wkFWD");
-            anim.ResetTrigger("idle");
+            isAttacking = false;
         }
-        else if (mvBack == false)
+
+        if (isAttacking == false)
         {
-            anim.SetTrigger("idle");
-            anim.ResetTrigger("wkFWD");
+
+            if (mvBack == true)
+            {
+                anim.SetTrigger("wkBACK");
+                anim.ResetTrigger("idle");
+            }
+            else
+            {
+                anim.SetTrigger("idle");
+                anim.ResetTrigger("wkBACK");
+            }
+
+            if (mvFWD == true)
+            {
+                anim.SetTrigger("wkFWD");
+                anim.ResetTrigger("idle");
+            }
+            else if (mvBack == false)
+            {
+                anim.SetTrigger("idle");
+                anim.ResetTrigger("wkFWD");
+            }
+
         }
-        
+
+    }
+
+    public void punch()
+    {
+        isAttacking = true;
+        anim.ResetTrigger("idle");
+        anim.SetTrigger("punch");
+    }
+
+    public void kick()
+    {
+        isAttacking = true;
+        anim.ResetTrigger("idle");
+        anim.SetTrigger("kick");
+    }
+
+    public void react()
+    {
+        isAttacking = true;
+        anim.ResetTrigger("idle");
+        anim.SetTrigger("react");
     }
 }
