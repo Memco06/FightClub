@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class fighterController : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class fighterController : MonoBehaviour
     public static fighterController instance;
     public static bool isAttacking = false;
     private Vector3 direction;
+    public int health = 100;
+    public Slider playerHB;
 
     private void Awake()
     {
@@ -90,5 +93,7 @@ public class fighterController : MonoBehaviour
         isAttacking = true;
         anim.ResetTrigger("idle");
         anim.SetTrigger("react");
+        health = health - 10;
+        playerHB.value = health;
     }
 }
