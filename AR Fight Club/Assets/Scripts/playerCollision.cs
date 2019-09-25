@@ -8,6 +8,7 @@ public class playerCollision : MonoBehaviour
     {
         if (other.tag == "Enemy")
         {
+            fighterController.instance.react();
             Debug.Log("ENEMY HIT");
         }
     }

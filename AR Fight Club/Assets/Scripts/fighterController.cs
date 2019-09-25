@@ -91,9 +91,21 @@ public class fighterController : MonoBehaviour
     public void react()
     {
         isAttacking = true;
-        anim.ResetTrigger("idle");
-        anim.SetTrigger("react");
         health = health - 10;
+        if (health < 10)
+        {
+            knockout();
+        }
+        else
+        {
+            anim.ResetTrigger("idle");
+            anim.SetTrigger("react");
+        }
         playerHB.value = health;
+    }
+
+    public void knockout()
+    {
+        anim.SetTrigger("knockout");
     }
 }

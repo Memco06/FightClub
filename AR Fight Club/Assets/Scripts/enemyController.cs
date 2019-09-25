@@ -36,6 +36,35 @@ public class enemyController : MonoBehaviour
             direction.y = 0;
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), 0.3f);
         }
+
+        Debug.Log(direction.magnitude);
+
+        if (direction.magnitude > 2f && gameController.allowMovement == true)
+        {
+            anim2.SetTrigger("walkFWD");
+        }
+        else
+        {
+            anim2.ResetTrigger("walkFWD");
+        }
+
+        if (direction.magnitude < 2f && direction.magnitude > 0.5f && gameController.allowMovement == true)
+        {
+            anim2.SetTrigger("kick");
+        }
+        else
+        {
+            anim2.ResetTrigger("kick");
+        }
+
+        if (direction.magnitude < 0.25f && gameController.allowMovement == true)
+        {
+            anim2.SetTrigger("punch");
+        }
+        else
+        {
+            anim2.ResetTrigger("punch");
+        }
     }
 
     public void enemyReact()
