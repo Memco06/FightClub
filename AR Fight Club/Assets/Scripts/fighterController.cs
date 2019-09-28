@@ -15,6 +15,9 @@ public class fighterController : MonoBehaviour
     private Vector3 direction;
     public int health = 100;
     public Slider playerHB;
+    public BoxCollider[] c;
+    public AudioClip[] auidoClip;
+    AudioSource audio;
 
     private void Awake()
     {
@@ -28,6 +31,19 @@ public class fighterController : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+        SetAllBoxColliders(false);
+        audio = GetComponent<AudioSource>();
+    }
+    public void playAudio(int clip)
+    {
+        audio.clip = auidoClip[clip];
+        audio.Play();
+    }
+
+    private void SetAllBoxColliders(bool state)
+    {
+        c[0].enabled = state;
+        c[1].enabled = state;
     }
 
     // Update is called once per frame
@@ -43,6 +59,7 @@ public class fighterController : MonoBehaviour
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("fight_idle"))
         {
             isAttacking = false;
+            SetAllBoxColliders(false);
         }
 
         if (isAttacking == false)
@@ -52,6 +69,7 @@ public class fighterController : MonoBehaviour
             {
                 anim.SetTrigger("wkBACK");
                 anim.ResetTrigger("idle");
+                SetAllBoxColliders(false);
             }
             else
             {
@@ -63,6 +81,7 @@ public class fighterController : MonoBehaviour
             {
                 anim.SetTrigger("wkFWD");
                 anim.ResetTrigger("idle");
+                SetAllBoxColliders(false);
             }
             else if (mvBack == false)
             {
@@ -70,6 +89,10 @@ public class fighterController : MonoBehaviour
                 anim.ResetTrigger("wkFWD");
             }
 
+        }
+        else if (isAttacking == true)
+        {
+            SetAllBoxColliders(true);
         }
 
     }
@@ -79,6 +102,7 @@ public class fighterController : MonoBehaviour
         isAttacking = true;
         anim.ResetTrigger("idle");
         anim.SetTrigger("punch");
+        playAudio(0);
     }
 
     public void kick()
@@ -86,6 +110,7 @@ public class fighterController : MonoBehaviour
         isAttacking = true;
         anim.ResetTrigger("idle");
         anim.SetTrigger("kick");
+        playAudio(1);
     }
 
     public void react()
@@ -95,11 +120,13 @@ public class fighterController : MonoBehaviour
         if (health < 10)
         {
             knockout();
+            playAudio(3);
         }
         else
         {
             anim.ResetTrigger("idle");
             anim.SetTrigger("react");
+            playAudio(2);
         }
         playerHB.value = health;
     }
