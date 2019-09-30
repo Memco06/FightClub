@@ -7,7 +7,7 @@ public class fighterController : MonoBehaviour
 {
 
     public Transform enemyTarget;
-    static  Animator anim;
+    static Animator anim;
     public static bool mvBack = false;
     public static bool mvFWD = false;
     public static fighterController instance;
@@ -18,6 +18,7 @@ public class fighterController : MonoBehaviour
     public BoxCollider[] c;
     public AudioClip[] auidoClip;
     AudioSource audio;
+    private Vector3 playerPosition;
 
     private void Awake()
     {
@@ -33,6 +34,7 @@ public class fighterController : MonoBehaviour
         anim = GetComponent<Animator>();
         SetAllBoxColliders(false);
         audio = GetComponent<AudioSource>();
+        playerPosition = transform.position;
     }
     public void playAudio(int clip)
     {
@@ -61,38 +63,40 @@ public class fighterController : MonoBehaviour
             isAttacking = false;
             SetAllBoxColliders(false);
         }
-
-        if (isAttacking == false)
+        if (gameController.allowMovement == true)
         {
+            if (isAttacking == false)
+            {
 
-            if (mvBack == true)
-            {
-                anim.SetTrigger("wkBACK");
-                anim.ResetTrigger("idle");
-                SetAllBoxColliders(false);
-            }
-            else
-            {
-                anim.SetTrigger("idle");
-                anim.ResetTrigger("wkBACK");
-            }
+                if (mvBack == true)
+                {
+                    anim.SetTrigger("wkBACK");
+                    anim.ResetTrigger("idle");
+                    SetAllBoxColliders(false);
+                }
+                else
+                {
+                    anim.SetTrigger("idle");
+                    anim.ResetTrigger("wkBACK");
+                }
 
-            if (mvFWD == true)
-            {
-                anim.SetTrigger("wkFWD");
-                anim.ResetTrigger("idle");
-                SetAllBoxColliders(false);
-            }
-            else if (mvBack == false)
-            {
-                anim.SetTrigger("idle");
-                anim.ResetTrigger("wkFWD");
-            }
+                if (mvFWD == true)
+                {
+                    anim.SetTrigger("wkFWD");
+                    anim.ResetTrigger("idle");
+                    SetAllBoxColliders(false);
+                }
+                else if (mvBack == false)
+                {
+                    anim.SetTrigger("idle");
+                    anim.ResetTrigger("wkFWD");
+                }
 
-        }
-        else if (isAttacking == true)
-        {
-            SetAllBoxColliders(true);
+            }
+            else if (isAttacking == true)
+            {
+                SetAllBoxColliders(true);
+            }
         }
 
     }
@@ -133,6 +137,32 @@ public class fighterController : MonoBehaviour
 
     public void knockout()
     {
+        gameController.allowMovement = false;
+        health = 100;
+        playerHB.value = 100;
         anim.SetTrigger("knockout");
+        gameController.instance.scoreEnemy();
+        gameController.instance.onScreenPoints();
+        gameController.instance.rounds();
+        if (gameController.enemyScore == 2)
+        {
+            // gameController.instance.doReset();
+        }
+        else
+        {
+            StartCoroutine(resetCharacters());
+        }
+    }
+
+    IEnumerator resetCharacters()
+    {
+        yield return new WaitForSeconds(4);
+        GameObject[] theclone = GameObject.FindGameObjectsWithTag("Player");
+        Transform t = theclone[5].GetComponent<Transform>();
+        anim.SetTrigger("idle");
+        anim.ResetTrigger("knockout");
+        t.position = playerPosition;
+        t.position = new Vector3(t.position.x, 0.1f, t.position.z);
+        gameController.allowMovement = true;
     }
 }

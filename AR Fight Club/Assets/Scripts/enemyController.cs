@@ -15,6 +15,7 @@ public class enemyController : MonoBehaviour
     public BoxCollider[] c;
     public AudioClip[] auidoClip;
     AudioSource audio;
+    private Vector3 enemyPosition;
 
     private void Awake()
     {
@@ -30,6 +31,7 @@ public class enemyController : MonoBehaviour
         anim2 = GetComponent<Animator>();
         SetAllBoxColliders(false);
         audio = GetComponent<AudioSource>();
+        enemyPosition = transform.position;
     }
     public void playAudio(int clip)
     {
@@ -54,9 +56,9 @@ public class enemyController : MonoBehaviour
             SetAllBoxColliders(false);
         }
 
-        Debug.Log(direction.magnitude);
+        Debug.Log(direction.magnitude * 10);
 
-        if (direction.magnitude > 13f && gameController.allowMovement == true)
+        if (direction.magnitude * 10 > 13f && gameController.allowMovement == true)
         {
             anim2.SetTrigger("walkFWD");
             audio.Stop();
@@ -67,7 +69,7 @@ public class enemyController : MonoBehaviour
             anim2.ResetTrigger("walkFWD");
         }
 
-        if (direction.magnitude < 13f && direction.magnitude > 8 && gameController.allowMovement == true)
+        if (direction.magnitude * 10 < 13f && direction.magnitude * 10 > 8 && gameController.allowMovement == true)
         {            
             SetAllBoxColliders(true);
             if ( !audio.isPlaying  && !anim2.GetCurrentAnimatorStateInfo(0).IsName("roundhouse_kick 2"))
@@ -81,7 +83,7 @@ public class enemyController : MonoBehaviour
             anim2.ResetTrigger("kick");
         }
 
-        if (direction.magnitude < 6f && gameController.allowMovement == true)
+        if (direction.magnitude * 10 < 6f && gameController.allowMovement == true)
         {
             SetAllBoxColliders(true);
             if (!audio.isPlaying && !anim2.GetCurrentAnimatorStateInfo(0).IsName("cross_punch"))
@@ -95,7 +97,7 @@ public class enemyController : MonoBehaviour
             anim2.ResetTrigger("punch");
         }
 
-        if (direction.magnitude > 0f && direction.magnitude < 2 && gameController.allowMovement == true)
+        if (direction.magnitude * 10 > 0f && direction.magnitude * 10 < 2 && gameController.allowMovement == true)
         {
             anim2.SetTrigger("walkBack");
             SetAllBoxColliders(false);
@@ -127,6 +129,31 @@ public class enemyController : MonoBehaviour
 
     public void enemyKnockout()
     {
+        gameController.allowMovement = false;
+        enemyHealth = 100;
+        enemyHB.value = 100;
         anim2.SetTrigger("knockout");
+        gameController.instance.scorePlayer();
+        gameController.instance.onScreenPoints();
+        gameController.instance.rounds();
+
+        if (gameController.playerScore == 2)
+        {
+           gameController.instance.doReset();
+        }
+        else
+        {
+            StartCoroutine(resetCharacters());
+        }
+    }
+
+    IEnumerator resetCharacters()
+    {
+        yield return new WaitForSeconds(4);
+        GameObject[] theclone = GameObject.FindGameObjectsWithTag("Enemy");
+        Transform t = theclone[1].GetComponent<Transform>();
+        t.position = enemyPosition;
+        t.position = new Vector3(t.position.x, 0, t.position.z);
+        gameController.allowMovement = true;
     }
 }
