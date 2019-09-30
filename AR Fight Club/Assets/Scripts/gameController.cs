@@ -59,17 +59,17 @@ public class gameController : MonoBehaviour
     public void doReset()
     {
         playerScore = 0;
-        enemyScore = 0;
-        points[0].SetActive(false);
-        points[1].SetActive(false);
-        points[2].SetActive(false);
-        points[3].SetActive(false);
+        enemyScore = 0;       
         StartCoroutine(restartGame());
     }
 
     IEnumerator restartGame()
     {
         yield return new WaitForSeconds(4.5f);
+        points[0].SetActive(false);
+        points[1].SetActive(false);
+        points[2].SetActive(false);
+        points[3].SetActive(false);
         allowMovement = true;
         StartCoroutine(restartRoundAudio());
     }
