@@ -58,6 +58,19 @@ public class gameController : MonoBehaviour
 
     public void doReset()
     {
+        if (playerScore == 2)
+        {
+            playAudioTrack(6);
+        }
+        else
+        {
+            playAudioTrack(5);
+        }
+        fighterController.instance.playerHB.value = 100;
+        fighterController.instance.health = 100;
+
+        enemyController.instance.enemyHB.value = 100;
+        enemyController.instance.enemyHealth = 100;
         playerScore = 0;
         enemyScore = 0;       
         StartCoroutine(restartGame());
@@ -154,7 +167,7 @@ public class gameController : MonoBehaviour
         round = playerScore + enemyScore;
         if (round == 1)
         {
-            playAudioTrack(4);
+            playAudioTrack(3);
         }
         if (round == 2 && playerScore != 2 && enemyScore != 2)
         {

@@ -139,14 +139,14 @@ public class fighterController : MonoBehaviour
     {
         gameController.allowMovement = false;
         health = 100;
-        playerHB.value = 100;
         anim.SetTrigger("knockout");
         gameController.instance.scoreEnemy();
         gameController.instance.onScreenPoints();
         gameController.instance.rounds();
         if (gameController.enemyScore == 2)
         {
-            // gameController.instance.doReset();
+             gameController.instance.doReset();
+            StartCoroutine(resetCharacters());
         }
         else
         {
@@ -157,6 +157,7 @@ public class fighterController : MonoBehaviour
     IEnumerator resetCharacters()
     {
         yield return new WaitForSeconds(4);
+        playerHB.value = 100;
         GameObject[] theclone = GameObject.FindGameObjectsWithTag("Player");
         Transform t = theclone[5].GetComponent<Transform>();
         anim.SetTrigger("idle");

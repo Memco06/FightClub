@@ -130,8 +130,7 @@ public class enemyController : MonoBehaviour
     public void enemyKnockout()
     {
         gameController.allowMovement = false;
-        enemyHealth = 100;
-        enemyHB.value = 100;
+        enemyHealth = 100;      
         anim2.SetTrigger("knockout");
         gameController.instance.scorePlayer();
         gameController.instance.onScreenPoints();
@@ -150,10 +149,11 @@ public class enemyController : MonoBehaviour
     IEnumerator resetCharacters()
     {
         yield return new WaitForSeconds(4);
+        enemyHB.value = 100;
         GameObject[] theclone = GameObject.FindGameObjectsWithTag("Enemy");
-        Transform t = theclone[1].GetComponent<Transform>();
+        Transform t = theclone[0].GetComponent<Transform>();
         t.position = enemyPosition;
-        t.position = new Vector3(t.position.x, 0, t.position.z);
+        t.position = new Vector3(t.position.x, 0.09f, t.position.z);
         gameController.allowMovement = true;
     }
 }

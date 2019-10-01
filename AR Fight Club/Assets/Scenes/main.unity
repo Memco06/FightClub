@@ -2629,7 +2629,7 @@ GameObject:
   - component: {fileID: 758478129}
   - component: {fileID: 758478131}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: GameController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2661,6 +2661,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4f3356d8b534b48ceb31db0c0a5512b3, type: 3}
   - {fileID: 8300000, guid: 83b65c526647447be93abb6f6d7f8a7e, type: 3}
   - {fileID: 8300000, guid: edb554e145a984e229dd15067e72f1a2, type: 3}
+  - {fileID: 8300000, guid: cd363514a19624d5688616c2a49743f5, type: 3}
+  - {fileID: 8300000, guid: 13ad70353a5254f03871df76c9cd9d38, type: 3}
   points:
   - {fileID: 1419752886}
   - {fileID: 1570358974}
@@ -4176,7 +4178,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 57017081cff41744fb730dcdc8d40193, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.331
+      value: 0.42
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 57017081cff41744fb730dcdc8d40193, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5607,7 +5609,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1d0c01bd21ad742eebadb7ead404dfdf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.331
+      value: -0.399
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1d0c01bd21ad742eebadb7ead404dfdf, type: 3}
       propertyPath: m_LocalPosition.y
